@@ -1,0 +1,10 @@
+package com.zhiyuan.spinrg5recipeapp.repositories;
+
+import com.zhiyuan.spinrg5recipeapp.domain.Recipe;
+import org.springframework.data.repository.CrudRepository;
+
+import java.util.Optional;
+
+public interface RecipeRepository extends CrudRepository<Recipe,Long> {
+
+}
