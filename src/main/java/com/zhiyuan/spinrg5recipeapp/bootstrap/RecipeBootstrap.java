@@ -173,6 +173,8 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
         guacaRecipe.getCategories().add(usCategory);
         guacaRecipe.getCategories().add(mexicoCategory);
 
+        guacaRecipe.setUrl("https://goo.gl/jbC9i8");
+
         recipeList.add(guacaRecipe);
 
         //Taco detials
@@ -232,6 +234,8 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
 
         tacosRecipe.getCategories().add(usCategory);
         tacosRecipe.getCategories().add(mexicoCategory);
+
+        tacosRecipe.setUrl("https://goo.gl/nPJ1so");
 
         recipeList.add(tacosRecipe);
 
