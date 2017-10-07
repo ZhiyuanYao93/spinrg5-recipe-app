@@ -1,5 +1,7 @@
 package com.zhiyuan.spinrg5recipeapp.services;
 
+import com.zhiyuan.spinrg5recipeapp.converters.RecipeCommandToRecipe;
+import com.zhiyuan.spinrg5recipeapp.converters.RecipeToRecipeCommand;
 import com.zhiyuan.spinrg5recipeapp.domain.Recipe;
 import com.zhiyuan.spinrg5recipeapp.repositories.RecipeRepository;
 import org.junit.Before;
@@ -22,10 +24,16 @@ public class RecipeServiceImplTest {
     @Mock
     RecipeRepository recipeRepository;
 
+    @Mock
+    RecipeCommandToRecipe recipeCommandToRecipe;
+
+    @Mock
+    RecipeToRecipeCommand recipeToRecipeCommand;
+
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        recipeService = new RecipeServiceImpl(recipeRepository);
+        recipeService = new RecipeServiceImpl(recipeRepository,recipeToRecipeCommand,recipeCommandToRecipe);
     }
 
     @Test
@@ -55,10 +63,21 @@ public class RecipeServiceImplTest {
         recipeData.add(recipe);
 
         when(recipeService.getRecipes()).thenReturn(recipeData);
+
         Set<Recipe> recipeSet = recipeService.getRecipes();
+
         assertEquals(recipeSet.size(),1);
+
         verify(recipeRepository,times(1)).findAll();
         verify(recipeRepository,never()).findById(anyLong());
     }
 
+    @Test
+    public void testDeleteRecipe() throws Exception {
+        Long id = new Long(1L);
+
+        recipeService.deleteById(id);
+
+        verify(recipeRepository,times(1)).deleteById(anyLong());
+    }
 }
