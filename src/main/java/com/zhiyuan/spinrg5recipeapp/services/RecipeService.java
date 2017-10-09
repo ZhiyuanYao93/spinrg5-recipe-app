@@ -1,5 +1,6 @@
 package com.zhiyuan.spinrg5recipeapp.services;
 
+import com.zhiyuan.spinrg5recipeapp.commands.IngredientCommand;
 import com.zhiyuan.spinrg5recipeapp.commands.RecipeCommand;
 import com.zhiyuan.spinrg5recipeapp.domain.Recipe;
 
@@ -15,4 +16,5 @@ public interface RecipeService {
     RecipeCommand findRecipeCommandById(long l);
 
     void deleteById(Long id);
+
 }

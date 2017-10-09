@@ -1,5 +1,6 @@
 package com.zhiyuan.spinrg5recipeapp.services;
 
+import com.zhiyuan.spinrg5recipeapp.commands.IngredientCommand;
 import com.zhiyuan.spinrg5recipeapp.commands.RecipeCommand;
 import com.zhiyuan.spinrg5recipeapp.converters.RecipeCommandToRecipe;
 import com.zhiyuan.spinrg5recipeapp.converters.RecipeToRecipeCommand;
