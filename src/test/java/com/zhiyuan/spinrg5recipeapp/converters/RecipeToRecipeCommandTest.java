@@ -9,6 +9,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class RecipeToRecipeCommandTest {
+    //TODO: test Byte[] images conversion
     private static final Long ID_VALUE = new Long(1L);
     private static final String DESCR = new String("Description");
     private static final Integer PREP_TIME = new Integer(2);

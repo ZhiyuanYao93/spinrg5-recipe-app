@@ -2,11 +2,15 @@ package com.zhiyuan.spinrg5recipeapp.domain;
 
 import com.sun.tools.javap.TypeAnnotationWriter;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
+//@Getter
+//@Setter
 @Data
 @Entity
 public class Recipe {
@@ -24,6 +28,7 @@ public class Recipe {
     @Lob
     private String directions;
 
+    //Hibernate team recommends the use Wrapper class instead of the primitive type.
     @Lob
     private Byte[] images;
 

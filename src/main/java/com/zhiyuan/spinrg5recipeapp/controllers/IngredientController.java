@@ -1,6 +1,8 @@
 package com.zhiyuan.spinrg5recipeapp.controllers;
 
 import com.zhiyuan.spinrg5recipeapp.commands.IngredientCommand;
+import com.zhiyuan.spinrg5recipeapp.commands.RecipeCommand;
+import com.zhiyuan.spinrg5recipeapp.commands.UnitOfMeasureCommand;
 import com.zhiyuan.spinrg5recipeapp.services.IngredientService;
 import com.zhiyuan.spinrg5recipeapp.services.RecipeService;
 import com.zhiyuan.spinrg5recipeapp.services.UnitOfMeasureService;
@@ -23,8 +25,8 @@ public class IngredientController {
         this.unitOfMeasureService = unitOfMeasureService;
     }
 
-    @GetMapping
-    @RequestMapping("/recipe/{recipeId}/ingredients")
+
+    @GetMapping("/recipe/{recipeId}/ingredients")
     public String listIngredients(@PathVariable String recipeId, Model model){
         log.debug("Getting ingredient list for recipe with ID: " + recipeId);
 
@@ -33,8 +35,8 @@ public class IngredientController {
         return "recipe/ingredient/list";
     }
 
-    @GetMapping
-    @RequestMapping("/recipe/{recipeId}/ingredient/{ingredientId}/show")
+
+    @GetMapping("/recipe/{recipeId}/ingredient/{ingredientId}/show")
     public String showIngredient(@PathVariable(name = "recipeId") String recipeId,
                                  @PathVariable(name = "ingredientId") String ingredientId,
                                  Model model){
@@ -44,8 +46,7 @@ public class IngredientController {
 
     }
 
-    @GetMapping
-    @RequestMapping("/recipe/{recipeId}/ingredient/{ingredientId}/update")
+    @GetMapping("/recipe/{recipeId}/ingredient/{ingredientId}/update")
     public String updateIngredient(@PathVariable(name = "recipeId") String recipeId,
                                    @PathVariable(name = "ingredientId") String ingredientId,
                                    Model model){
@@ -68,6 +69,35 @@ public class IngredientController {
         return "redirect:/recipe/" + savedIngredientCommand.getRecipeId() + "/ingredient/" + savedIngredientCommand.getId() + "/show" ;
     }
 
+    @GetMapping("/recipe/{recipeId}/ingredient/new")
+    public String createIngredient(@PathVariable(name = "recipeId") String recipeId,Model model){
+        RecipeCommand recipeCommand = recipeService.findRecipeCommandById(Long.valueOf(recipeId));
+        //TODO:Exception if null
+
+        //create ingredientComman
+        IngredientCommand ingredientCommand = new IngredientCommand();
+        ingredientCommand.setRecipeId(Long.valueOf(recipeId));
+
+        //init UOM list for the newly created ingredientCommand
+        ingredientCommand.setUnitOfMeasure(new UnitOfMeasureCommand());
+
+
+        model.addAttribute("ingredient",ingredientCommand);
+        model.addAttribute("uomList",unitOfMeasureService.listAllUom());
+
+        return "recipe/ingredient/ingredientForm";
+
+    }
+
+    @GetMapping("/recipe/{recipeId}/ingredient/{ingredientId}/delete")
+    public String deleteIngredient(@PathVariable(name = "recipeId") String recipeId,
+                                   @PathVariable(name = "ingredientId") String ingredientId){
+        log.debug("deleting ingredient with id: " + ingredientId + "of recipe of Id: " + recipeId );
+
+        ingredientService.deleteById(Long.valueOf(recipeId),Long.valueOf(ingredientId));
+
+        return "redirect:/recipe/" + recipeId + "/ingredients";
+    }
 
 }
 

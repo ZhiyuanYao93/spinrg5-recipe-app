@@ -25,12 +25,19 @@
 <div class="container-fluid" style="margin-top: 20px">
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
-            <form  th:object="${recipe}" th:action="@{/recipe/}">
+            <form  th:object="${recipe}" th:action="@{/recipe/}" method="post">
                 <input type="hidden" th:field="*{id}"/>
                 <div class="pannel-group">
                     <div class="panel panel-primary">
                         <div class="panel-heading">
-                            <h1 class="panel-title">Edit Recipe Information</h1>
+
+                            <div class="col-md-11 ">
+                                <h1 class="panel-title">Edit Recipe Information</h1>
+                            </div>
+                            <div class="col-md-1">
+                                <a class="btn btn-default" href="#" th:href="@{'/'}" role="button">Home Page</a>
+                            </div>
+
                         </div>
                         <div class="panel-body">
                             <div class="row">
@@ -69,7 +76,14 @@
                                 </div>
                                 <div class="col-md-3 form-group">
                                     <label>Difficulty:</label>
-                                    <select class="form-control">
+                                    <select class="form-control" th:field="*{difficulty}">
+                                        <option th:each="difficultyValue : ${T(com.zhiyuan.spinrg5recipeapp.domain.Difficulty).values()}"
+                                                th:value="${difficultyValue.name()}"
+                                                th:text="${difficultyValue.name()}"
+                                        >Only this shows in Thymeleaf</option>
+                                    </select>
+
+                                    <select class="form-control" th:remove="all">
                                         <option>Easy</option>
                                         <option>Medium</option>
                                         <option>Hard</option>
@@ -99,7 +113,7 @@
                                     <h1 class="panel-title">Ingredients</h1>
                                 </div>
                                 <div class="col-md-1">
-                                    <a class="btn btn-default" href="#" role="button">Edit</a>
+                                    <a class="btn btn-default" th:href="@{'/recipe/' + ${recipe.id} + '/ingredients'}" role="button">Edit</a>
                                 </div>
                             </div>
                         </div>
