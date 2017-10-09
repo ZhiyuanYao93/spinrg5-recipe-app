@@ -2,6 +2,7 @@ package com.zhiyuan.spinrg5recipeapp.controllers;
 
 import com.zhiyuan.spinrg5recipeapp.commands.RecipeCommand;
 import com.zhiyuan.spinrg5recipeapp.domain.Recipe;
+import com.zhiyuan.spinrg5recipeapp.exceptions.NotFoundException;
 import com.zhiyuan.spinrg5recipeapp.services.RecipeService;
 import org.junit.Before;
 import org.junit.Test;
@@ -54,6 +55,17 @@ public class RecipeControllerTest {
     }
 
     @Test
+    public void testShowIdNotFound() throws Exception {
+        Recipe recipe = new Recipe();
+        recipe.setId(1L);
+
+        when(recipeService.findById(anyLong())).thenThrow(NotFoundException.class);
+
+        mockMvc.perform(get("/recipe/1/show"))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
     public void testGetNewRecipeForm() throws Exception {
         RecipeCommand command = new RecipeCommand();
 
@@ -100,4 +112,6 @@ public class RecipeControllerTest {
 
         verify(recipeService,times(1)).deleteById(anyLong());
     }
+
+
 }
