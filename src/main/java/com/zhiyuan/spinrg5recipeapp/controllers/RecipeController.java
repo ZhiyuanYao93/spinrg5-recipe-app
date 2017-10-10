@@ -9,13 +9,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.validation.Valid;
 
 @Slf4j
 @Controller
 public class RecipeController {
     private final RecipeService recipeService;
+    private static final String RECIPE_RECIPEFORM_URL = "recipe/recipeForm";
 
     @Autowired
     public RecipeController(RecipeService recipeService) {
@@ -33,12 +37,18 @@ public class RecipeController {
     @GetMapping("/recipe/new")
     public String newRecipe(Model model){
         model.addAttribute("recipe",new RecipeCommand());
-        return "recipe/recipeForm";
+        return RECIPE_RECIPEFORM_URL;
     }
 
     @PostMapping
     @RequestMapping("recipe")
-    public String saveOrUpdate(@ModelAttribute RecipeCommand recipeCommand){
+    public String saveOrUpdate(@Valid @ModelAttribute("recipe") RecipeCommand recipeCommand, BindingResult bindingResult){
+        if(bindingResult.hasErrors()){
+            bindingResult.getAllErrors().forEach(objectError -> {
+                log.error(objectError.toString());
+            });
+            return RECIPE_RECIPEFORM_URL;
+        }
         //TODO:solve the addition of category. Check recipeForm.html
         RecipeCommand savedRecipeCommand = recipeService.saveRecipeCommand(recipeCommand);
         return "redirect:/recipe/" + savedRecipeCommand.getId() + "/show" ;
@@ -48,7 +58,7 @@ public class RecipeController {
     @GetMapping("recipe/{id}/update")
     public String updateRecipe(@PathVariable String id, Model model){
         model.addAttribute("recipe",recipeService.findRecipeCommandById(Long.valueOf(id)));
-        return "recipe/recipeForm";
+        return RECIPE_RECIPEFORM_URL;
     }
 
 
@@ -76,19 +86,19 @@ public class RecipeController {
     }
 
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(NumberFormatException.class)
-    public ModelAndView handleNumberFormat(Exception exception){
-        log.error("Handling  NumberFormat Error");
-        log.error(exception.getMessage());
-        ModelAndView modelAndView = new ModelAndView();
-
-        modelAndView.setViewName("400error");
-
-        modelAndView.addObject("exception",exception);
-        return modelAndView;
-
-    }
+//    @ResponseStatus(HttpStatus.BAD_REQUEST)
+//    @ExceptionHandler(NumberFormatException.class)
+//    public ModelAndView handleNumberFormat(Exception exception){
+//        log.error("Handling  NumberFormat Error");
+//        log.error(exception.getMessage());
+//        ModelAndView modelAndView = new ModelAndView();
+//
+//        modelAndView.setViewName("400error");
+//
+//        modelAndView.addObject("exception",exception);
+//        return modelAndView;
+//
+//    }
 
 
 }
