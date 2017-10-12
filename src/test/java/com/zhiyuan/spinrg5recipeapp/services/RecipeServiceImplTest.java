@@ -3,6 +3,7 @@ package com.zhiyuan.spinrg5recipeapp.services;
 import com.zhiyuan.spinrg5recipeapp.converters.RecipeCommandToRecipe;
 import com.zhiyuan.spinrg5recipeapp.converters.RecipeToRecipeCommand;
 import com.zhiyuan.spinrg5recipeapp.domain.Recipe;
+import com.zhiyuan.spinrg5recipeapp.exceptions.NotFoundException;
 import com.zhiyuan.spinrg5recipeapp.repositories.RecipeRepository;
 import org.junit.Before;
 import org.junit.Test;
@@ -79,5 +80,16 @@ public class RecipeServiceImplTest {
         recipeService.deleteById(id);
 
         verify(recipeRepository,times(1)).deleteById(anyLong());
+    }
+
+    @Test(expected = NotFoundException.class)
+    public void testFindByIdNotFound() throws Exception {
+        Optional<Recipe> recipeOptional = Optional.empty();
+
+        when(recipeRepository.findById(anyLong())).thenReturn(recipeOptional);
+
+        Recipe recipeReturned = recipeService.findById(1L);
+
+
     }
 }
