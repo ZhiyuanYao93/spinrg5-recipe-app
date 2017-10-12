@@ -1,6 +1,6 @@
 package com.zhiyuan.spinrg5recipeapp.domain;
 
-import com.sun.tools.javap.TypeAnnotationWriter;
+
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
